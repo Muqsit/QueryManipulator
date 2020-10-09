@@ -1,0 +1,16 @@
+{
+    "update_interval": 1200,
+    "server_identifiers": {
+        "pmmp_pm4": {"ip": "test.pmmp.io", "port": 19132},
+        "pmmp_pm3": {"ip": "test.pmmp.io", "port": 19133}
+    },
+    "components": {
+        "combine_slots": {
+            "max_slots": true,
+            "servers": ["pmmp_pm4", "pmmp_pm3"]
+        },
+        "server_name": {
+            "server": "pmmp_pm4"
+        }
+    }
+}
