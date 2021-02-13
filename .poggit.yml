@@ -1,0 +1,11 @@
+--- # Poggit-CI Manifest. Open the CI at https://poggit.pmmp.io/ci/Muqsit/QueryManipulator
+build-by-default: true
+branches:
+- master
+projects:
+  QueryManipulator:
+    path: ""
+    libs:
+      - src: jasonwynn10/libpmquery/libpmquery
+        version: ^0.0.1
+...
