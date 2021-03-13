@@ -10,11 +10,14 @@ use pocketmine\network\query\QueryInfo;
 final class CombineSlotsQueryManipulatorComponent implements QueryManipulatorComponent{
 
 	public static function fromConfiguration(array $configuration) : self{
-		return new self($configuration["servers"], $configuration["max_slots"]);
+		return new self($configuration["servers"], $configuration["max_slots"], $configuration["exclude_self"]);
 	}
 
 	/** @var bool */
 	private $manipulate_max;
+
+	/** @var bool */
+	private $exclude_self;
 
 	/** @var string[] */
 	private $server_identifiers = [];
@@ -28,8 +31,10 @@ final class CombineSlotsQueryManipulatorComponent implements QueryManipulatorCom
 	/**
 	 * @param string[] $server_identifiers
 	 * @param bool $manipulate_max
+	 * @param bool $exclude_self
 	 */
-	public function __construct(array $server_identifiers, bool $manipulate_max){
+	public function __construct(array $server_identifiers, bool $manipulate_max, bool $exclude_self){
+		$this->exclude_self = $exclude_self;
 		$this->manipulate_max = $manipulate_max;
 		foreach($server_identifiers as $server_identifier){
 			$this->server_identifiers[$server_identifier] = $server_identifier;
@@ -47,6 +52,6 @@ final class CombineSlotsQueryManipulatorComponent implements QueryManipulatorCom
 		if($this->manipulate_max){
 			$info->setMaxPlayerCount(array_sum($this->max_players));
 		}
-		$info->setPlayerCount(array_sum($this->players));
+		$info->setPlayerCount(($this->exclude_self ? 0 : $info->getPlayerCount()) + array_sum($this->players));
 	}
 }

@@ -7,6 +7,7 @@
     "components": {
         "combine_slots": {
             "max_slots": true,
+            "exclude_self": false,
             "servers": ["pmmp_pm4", "pmmp_pm3"]
         },
         "server_name": {
