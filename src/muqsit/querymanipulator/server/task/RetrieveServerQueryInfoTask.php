@@ -16,8 +16,7 @@ final class RetrieveServerQueryInfoTask extends AsyncTask{
 
 	private const KEY_SERVER_INFO_CALLBACK = "server_info_callback";
 
-	/** @var string */
-	private $server_network_identifiers_serialized;
+	private string $server_network_identifiers_serialized;
 
 	/**
 	 * @param ServerNetworkIdentifier[] $server_network_identifiers
@@ -33,10 +32,9 @@ final class RetrieveServerQueryInfoTask extends AsyncTask{
 
 	public function onRun() : void{
 		$result = [];
+		/** @var array<string, ServerNetworkIdentifier> $server_network_identifiers */
 		$server_network_identifiers = igbinary_unserialize($this->server_network_identifiers_serialized);
-		$this->server_network_identifiers_serialized = null;
 
-		/** @var ServerNetworkIdentifier $identifier */
 		foreach($server_network_identifiers as $id => $identifier){
 			try{
 				$query = PMQuery::query($identifier->ip, $identifier->port);
@@ -52,6 +50,8 @@ final class RetrieveServerQueryInfoTask extends AsyncTask{
 	}
 
 	public function onCompletion() : void{
-		$this->fetchLocal(self::KEY_SERVER_INFO_CALLBACK)($this->getResult());
+		/** @var Closure $callback */
+		$callback = $this->fetchLocal(self::KEY_SERVER_INFO_CALLBACK);
+		$callback($this->getResult());
 	}
 }

@@ -10,14 +10,12 @@ use pocketmine\network\query\QueryInfo;
 final class ServerNameQueryManipulatorComponent implements QueryManipulatorComponent{
 
 	public static function fromConfiguration(array $configuration) : self{
+		/** @phpstan-var array{server: string} $configuration */
 		return new self($configuration["server"]);
 	}
 
-	/** @var string */
-	private $server_identifier;
-
-	/** @var string */
-	private $name = "";
+	private string $server_identifier;
+	private string $name = "";
 
 	public function __construct(string $server_identifier){
 		$this->server_identifier = $server_identifier;

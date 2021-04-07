@@ -10,8 +10,7 @@ use pocketmine\event\server\QueryRegenerateEvent;
 
 final class EventHandler implements Listener{
 
-	/** @var QueryManipulator */
-	private $manipulator;
+	private QueryManipulator $manipulator;
 
 	public function __construct(QueryManipulator $manipulator){
 		$this->manipulator = $manipulator;

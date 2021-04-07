@@ -5,11 +5,14 @@ declare(strict_types=1);
 namespace muqsit\querymanipulator;
 
 use Closure;
+use http\Exception\RuntimeException;
+use muqsit\querymanipulator\config\QueryManipulatorConfig;
 use muqsit\querymanipulator\query\component\CombineSlotsQueryManipulatorComponent;
 use muqsit\querymanipulator\query\component\QueryManipulatorComponentFactory;
 use muqsit\querymanipulator\query\component\ServerNameQueryManipulatorComponent;
 use muqsit\querymanipulator\query\QueryManipulator;
 use muqsit\querymanipulator\server\ServerNetworkIdentifier;
+use muqsit\querymanipulator\server\ServerQueryInfo;
 use muqsit\querymanipulator\server\task\RetrieveServerQueryInfoTask;
 use pocketmine\plugin\PluginBase;
 use pocketmine\scheduler\ClosureTask;
@@ -17,10 +20,9 @@ use pocketmine\scheduler\ClosureTask;
 final class Loader extends PluginBase{
 
 	/** @var ServerNetworkIdentifier[] */
-	private $servers = [];
+	private array $servers = [];
 
-	/** @var QueryManipulator */
-	private $manipulator;
+	private QueryManipulator $manipulator;
 
 	protected function onLoad() : void{
 		$this->manipulator = new QueryManipulator($this->getLogger());
@@ -29,14 +31,14 @@ final class Loader extends PluginBase{
 		QueryManipulatorComponentFactory::register("server_name", ServerNameQueryManipulatorComponent::class);
 
 		$this->saveResource("config.json");
-		foreach($this->getConfiguration()["server_identifiers"] as $identifier => ["ip" => $ip, "port" => $port]){
-			$this->registerServer($identifier, $server = new ServerNetworkIdentifier($ip, $port));
+		foreach($this->getConfiguration()->server_identifiers as $info){
+			$this->registerServer($info->identifier, $server = new ServerNetworkIdentifier($info->ip, $info->port));
 		}
 	}
 
 	protected function onEnable() : void{
 		$config = $this->getConfiguration();
-		foreach($config["components"] as $identifier => $configuration){
+		foreach($config->components as $identifier => $configuration){
 			$this->manipulator->registerComponent($identifier, QueryManipulatorComponentFactory::create($identifier, $configuration));
 		}
 
@@ -44,15 +46,21 @@ final class Loader extends PluginBase{
 
 		$this->getScheduler()->scheduleRepeatingTask(new ClosureTask(function() : void{
 			$this->updateServerQueryInfo();
-		}), $config["update_interval"]);
+		}), $config->update_interval);
 	}
 
-	/**
-	 * @return array
-	 * @phpstan-return array<string, mixed>
-	 */
-	private function getConfiguration() : array{
-		return json_decode(file_get_contents($this->getDataFolder() . "config.json"), true, 512, JSON_THROW_ON_ERROR);
+	private function getConfiguration() : QueryManipulatorConfig{
+		$path = $this->getDataFolder() . "config.json";
+		$contents = file_get_contents($path);
+		if($contents === false){
+			throw new RuntimeException("Failed to read file {$path}");
+		}
+
+		$data = json_decode($contents, true, 512, JSON_THROW_ON_ERROR);
+		if(!is_array($data)){
+			throw new RuntimeException("Failed to parse configuration ({$path}) due to invalid structure");
+		}
+		return QueryManipulatorConfig::jsonDeserialize($data);
 	}
 
 	public function getManipulator() : QueryManipulator{

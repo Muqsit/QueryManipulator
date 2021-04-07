@@ -6,14 +6,9 @@ namespace muqsit\querymanipulator\server;
 
 class ServerQueryInfo{
 
-	/** @var string */
-	public $host_name;
-
-	/** @var int */
-	public $players;
-
-	/** @var int */
-	public $max_players;
+	public string $host_name;
+	public int $players;
+	public int $max_players;
 
 	public function __construct(string $host_name, int $players, int $max_players){
 		$this->host_name = $host_name;

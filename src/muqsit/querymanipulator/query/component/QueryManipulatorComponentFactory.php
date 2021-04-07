@@ -12,8 +12,14 @@ final class QueryManipulatorComponentFactory{
 	 * @var string[]|QueryManipulatorComponent[]
 	 * @phpstan-var array<string, class-string<QueryManipulatorComponent>>
 	 */
-	private static $registered = [];
+	private static array $registered = [];
 
+	/**
+	 * @param string $identifier
+	 * @param string $class
+	 *
+	 * @phpstan-param class-string<QueryManipulatorComponent> $class
+	 */
 	public static function register(string $identifier, string $class) : void{
 		Utils::testValidInstance($class, QueryManipulatorComponent::class);
 		self::$registered[$identifier] = $class;
