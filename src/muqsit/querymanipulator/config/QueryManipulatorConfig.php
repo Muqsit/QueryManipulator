@@ -7,13 +7,11 @@ namespace muqsit\querymanipulator\config;
 final class QueryManipulatorConfig{
 
 	/**
-	 * @param mixed[] $data
+	 * @param array<string, mixed> $data
 	 * @return self
-	 *
-	 * @phpstan-param array<mixed> $data
 	 */
 	public static function jsonDeserialize(array $data) : self{
-		/** @phpstan-var array{
+		/** @var array{
 		 * 		update_interval: positive-int,
 		 * 		server_identifiers: array<string, array{ip: string, port: positive-int}>,
 		 *		components: array<string, array<string, mixed>>

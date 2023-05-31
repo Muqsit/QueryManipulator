@@ -79,9 +79,7 @@ final class Loader extends PluginBase{
 	}
 
 	/**
-	 * @param Closure $callback
-	 *
-	 * @phpstan-param Closure(array<string, ServerQueryInfo>) : void $callback
+	 * @param Closure(array<string, ServerQueryInfo>) : void $callback
 	 */
 	public function requestServerUpdate(Closure $callback) : void{
 		$this->getServer()->getAsyncPool()->submitTask(new RetrieveServerQueryInfoTask($this->servers, $callback));

@@ -10,7 +10,7 @@ use pocketmine\network\query\QueryInfo;
 final class CombineSlotsQueryManipulatorComponent implements QueryManipulatorComponent{
 
 	public static function fromConfiguration(array $configuration) : self{
-		/** @phpstan-var array{servers: string[], max_slots: bool, exclude_self: bool} $configuration */
+		/** @var array{servers: string[], max_slots: bool, exclude_self: bool} $configuration */
 		return new self($configuration["servers"], $configuration["max_slots"], $configuration["exclude_self"]);
 	}
 

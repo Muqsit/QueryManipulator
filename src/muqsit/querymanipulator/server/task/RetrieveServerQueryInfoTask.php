@@ -19,11 +19,8 @@ final class RetrieveServerQueryInfoTask extends AsyncTask{
 	private string $server_network_identifiers_serialized;
 
 	/**
-	 * @param ServerNetworkIdentifier[] $server_network_identifiers
-	 * @param Closure $callback
-	 *
-	 * @phpstan-param array<string, ServerNetworkIdentifier> $server_network_identifiers
-	 * @phpstan-param Closure(array<string, ServerQueryInfo>) : void $callback
+	 * @param array<string, ServerNetworkIdentifier> $server_network_identifiers
+	 * @param Closure(array<string, ServerQueryInfo>) : void $callback
 	 */
 	public function __construct(array $server_network_identifiers, Closure $callback){
 		$this->server_network_identifiers_serialized = igbinary_serialize($server_network_identifiers);

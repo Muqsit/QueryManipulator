@@ -4,24 +4,16 @@ declare(strict_types=1);
 
 namespace muqsit\querymanipulator\query\component;
 
-use pocketmine\utils\Utils;
-
 final class QueryManipulatorComponentFactory{
 
-	/**
-	 * @var string[]|QueryManipulatorComponent[]
-	 * @phpstan-var array<string, class-string<QueryManipulatorComponent>>
-	 */
+	/** @var array<string, class-string<QueryManipulatorComponent>> */
 	private static array $registered = [];
 
 	/**
 	 * @param string $identifier
-	 * @param string $class
-	 *
-	 * @phpstan-param class-string<QueryManipulatorComponent> $class
+	 * @param class-string<QueryManipulatorComponent> $class
 	 */
 	public static function register(string $identifier, string $class) : void{
-		Utils::testValidInstance($class, QueryManipulatorComponent::class);
 		self::$registered[$identifier] = $class;
 	}
 
@@ -31,10 +23,8 @@ final class QueryManipulatorComponentFactory{
 
 	/**
 	 * @param string $identifier
-	 * @param mixed[] $configuration
+	 * @param array<string, mixed> $configuration
 	 * @return QueryManipulatorComponent
-	 *
-	 * @phpstan-param array<string, mixed> $configuration
 	 */
 	public static function create(string $identifier, array $configuration) : QueryManipulatorComponent{
 		return self::$registered[$identifier]::fromConfiguration($configuration);

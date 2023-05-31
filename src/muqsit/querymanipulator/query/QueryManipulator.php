@@ -31,9 +31,7 @@ final class QueryManipulator{
 	}
 
 	/**
-	 * @param ServerQueryInfo[] $server_query_infos
-	 *
-	 * @phpstan-param array<string, ServerQueryInfo> $server_query_infos
+	 * @param array<string, ServerQueryInfo> $server_query_infos
 	 */
 	public function update(array $server_query_infos) : void{
 		foreach($server_query_infos as $identifier => $server_info){
