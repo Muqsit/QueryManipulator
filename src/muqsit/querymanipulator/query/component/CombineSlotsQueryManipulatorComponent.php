@@ -6,38 +6,37 @@ namespace muqsit\querymanipulator\query\component;
 
 use muqsit\querymanipulator\server\ServerQueryInfo;
 use pocketmine\network\query\QueryInfo;
+use function array_combine;
+use function array_fill;
+use function count;
 
 final class CombineSlotsQueryManipulatorComponent implements QueryManipulatorComponent{
 
 	public static function fromConfiguration(array $configuration) : self{
 		/** @var array{servers: string[], max_slots: bool, exclude_self: bool} $configuration */
-		return new self($configuration["servers"], $configuration["max_slots"], $configuration["exclude_self"]);
+		return self::create($configuration["servers"], $configuration["max_slots"], $configuration["exclude_self"]);
 	}
 
-	readonly private bool $manipulate_max;
-	readonly private bool $exclude_self;
+	public static function create(array $server_identifiers, bool $manipulate_max, bool $exclude_self) : self{
+		return new self(array_combine($server_identifiers, array_fill(0, count($server_identifiers), true)), $manipulate_max, $exclude_self);
+	}
 
-	/** @var string[] */
-	private array $server_identifiers = [];
-
-	/** @var int[] */
+	/** @var array<string, int> */
 	private array $players = [];
 
-	/** @var int[] */
+	/** @var array<string, int> */
 	private array $max_players = [];
 
 	/**
-	 * @param string[] $server_identifiers
+	 * @param array<string, true> $server_identifiers
 	 * @param bool $manipulate_max
 	 * @param bool $exclude_self
 	 */
-	public function __construct(array $server_identifiers, bool $manipulate_max, bool $exclude_self){
-		$this->exclude_self = $exclude_self;
-		$this->manipulate_max = $manipulate_max;
-		foreach($server_identifiers as $server_identifier){
-			$this->server_identifiers[$server_identifier] = $server_identifier;
-		}
-	}
+	public function __construct(
+		readonly private array $server_identifiers,
+		readonly private bool $manipulate_max,
+		readonly private bool $exclude_self
+	){}
 
 	public function onReceiveUpdate(string $identifier, ServerQueryInfo $info) : void{
 		if(isset($this->server_identifiers[$identifier])){
