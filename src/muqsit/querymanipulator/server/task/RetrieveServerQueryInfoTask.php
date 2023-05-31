@@ -17,7 +17,7 @@ final class RetrieveServerQueryInfoTask extends AsyncTask{
 
 	private const KEY_SERVER_INFO_CALLBACK = "server_info_callback";
 
-	private string $server_network_identifiers_serialized;
+	readonly private string $server_network_identifiers_serialized;
 
 	/**
 	 * @param array<string, ServerNetworkIdentifier> $server_network_identifiers

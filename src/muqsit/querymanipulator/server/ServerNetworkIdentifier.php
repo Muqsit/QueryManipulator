@@ -8,8 +8,8 @@ use InvalidArgumentException;
 
 final class ServerNetworkIdentifier{
 
-	public string $ip;
-	public int $port;
+	readonly public string $ip;
+	readonly public int $port;
 
 	public function __construct(string $ip, int $port){
 		$ipv4 = filter_var(gethostbyname($ip), FILTER_VALIDATE_IP, FILTER_FLAG_IPV4);

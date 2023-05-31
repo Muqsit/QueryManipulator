@@ -14,8 +14,8 @@ final class CombineSlotsQueryManipulatorComponent implements QueryManipulatorCom
 		return new self($configuration["servers"], $configuration["max_slots"], $configuration["exclude_self"]);
 	}
 
-	private bool $manipulate_max;
-	private bool $exclude_self;
+	readonly private bool $manipulate_max;
+	readonly private bool $exclude_self;
 
 	/** @var string[] */
 	private array $server_identifiers = [];

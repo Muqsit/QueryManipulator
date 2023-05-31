@@ -27,22 +27,14 @@ final class QueryManipulatorConfig{
 		return new self($update_interval, $server_identifiers, $data["components"]);
 	}
 
-	public int $update_interval;
-
-	/** @var QueryManipulatorConfigServerIdentifier[] */
-	public array $server_identifiers;
-
-	/** @var array<string, array<string, mixed>> */
-	public array $components;
-
 	/**
 	 * @param int $update_interval
 	 * @param QueryManipulatorConfigServerIdentifier[] $server_identifiers
 	 * @param array<string, array<string, mixed>> $components
 	 */
-	public function __construct(int $update_interval, array $server_identifiers, array $components){
-		$this->update_interval = $update_interval;
-		$this->server_identifiers = $server_identifiers;
-		$this->components = $components;
-	}
+	public function __construct(
+		readonly public int $update_interval,
+		readonly public array $server_identifiers,
+		readonly public array $components
+	){}
 }

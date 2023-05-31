@@ -11,14 +11,12 @@ use pocketmine\network\query\QueryInfo;
 
 final class QueryManipulator{
 
-	private Logger $logger;
-
 	/** @var QueryManipulatorComponent[] */
 	private array $components = [];
 
-	public function __construct(Logger $logger){
-		$this->logger = $logger;
-	}
+	public function __construct(
+		readonly private Logger $logger
+	){}
 
 	public function registerComponent(string $identifier, QueryManipulatorComponent $component) : void{
 		$this->components[$identifier] = $component;
