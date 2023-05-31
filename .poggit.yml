@@ -6,6 +6,6 @@ projects:
   QueryManipulator:
     path: ""
     libs:
-      - src: libpmquery/libpmquery
+      - src: jasonw4331/libpmquery/libpmquery
         version: ^1.0.0
 ...
