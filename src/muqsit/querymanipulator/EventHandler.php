@@ -11,7 +11,7 @@ use pocketmine\event\server\QueryRegenerateEvent;
 final class EventHandler implements Listener{
 
 	public function __construct(
-		private QueryManipulator $manipulator
+		readonly private QueryManipulator $manipulator
 	){}
 
 	/**
