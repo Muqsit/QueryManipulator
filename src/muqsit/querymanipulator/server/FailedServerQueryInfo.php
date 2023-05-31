@@ -6,11 +6,10 @@ namespace muqsit\querymanipulator\server;
 
 final class FailedServerQueryInfo extends ServerQueryInfo{
 
-	readonly public string $error;
-
-	public function __construct(string $error){
+	public function __construct(
+		readonly public string $error
+	){
 		parent::__construct("", 0, 0);
-		$this->error = $error;
 	}
 
 	public function __toString() : string{
