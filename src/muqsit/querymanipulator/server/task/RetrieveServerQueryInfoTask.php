@@ -11,6 +11,7 @@ use muqsit\querymanipulator\server\FailedServerQueryInfo;
 use muqsit\querymanipulator\server\ServerNetworkIdentifier;
 use muqsit\querymanipulator\server\ServerQueryInfo;
 use pocketmine\scheduler\AsyncTask;
+use RuntimeException;
 
 final class RetrieveServerQueryInfoTask extends AsyncTask{
 
@@ -23,7 +24,7 @@ final class RetrieveServerQueryInfoTask extends AsyncTask{
 	 * @param Closure(array<string, ServerQueryInfo>) : void $callback
 	 */
 	public function __construct(array $server_network_identifiers, Closure $callback){
-		$this->server_network_identifiers_serialized = igbinary_serialize($server_network_identifiers);
+		$this->server_network_identifiers_serialized = igbinary_serialize($server_network_identifiers) ?? throw new RuntimeException("Failed to serialize server network identifiers");
 		$this->storeLocal(self::KEY_SERVER_INFO_CALLBACK, $callback);
 	}
 
