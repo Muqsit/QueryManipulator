@@ -32,7 +32,7 @@ final class Loader extends PluginBase{
 
 		$this->saveResource("config.json");
 		foreach($this->getConfiguration()->server_identifiers as $info){
-			$this->registerServer($info->identifier, $server = new ServerNetworkIdentifier($info->ip, $info->port));
+			$this->registerServer($info->identifier, ServerNetworkIdentifier::create($info->ip, $info->port));
 		}
 	}
 
